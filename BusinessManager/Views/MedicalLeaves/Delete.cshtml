@@ -1,0 +1,38 @@
+﻿@model BusinessManager.Application.ViewModel.HR.Employee.Work.ScheduleWork.MedicalLeave.MedicalLeaveViewModel
+
+<div class="container mt-4 shadow p-4 mb-5 bg-white rounded">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h4>Delete Leave Request</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Leave Request Details</h5>
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-3">First Name:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+
+                <dt class="col-sm-3">Last Name:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
+
+                <dt class="col-sm-3">Start Date:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.StartDate)</dd>
+
+                <dt class="col-sm-3">End Date:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.EndDate)</dd>
+
+            </dl>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="EmployeeId" />
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    <a asp-controller="Employee" asp-action="Details" asp-route-Id="@Model.EmployeeId" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

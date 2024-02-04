@@ -1,0 +1,103 @@
+﻿@model PagedList.StaticPagedList<BusinessManager.Application.ViewModel.HR.Employee.EmployeeDetails.EmployeeForListViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    var isFiltering = !string.IsNullOrEmpty(ViewBag.CurrentFilter);
+}
+
+<div class="container mt-4 text-lg-center shadow p-4 mb-5 bg-white rounded">
+    <form asp-action="Index" method="get">
+        <div class="row justify-content-between">
+            <div class="col-lg-3">
+                <h2>Employee List</h2>
+            </div>
+            <div class="col-lg-3">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="CreateEmployee" class="btn btn-success">Create Employee</a>
+                }
+            </div>
+            <div class="col-lg-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="searchString" value="@ViewBag.CurrentFilter" placeholder="Search">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">Reset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div style="overflow: auto;">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nr.</th>
+                    <th scope="col">
+                        @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, searchString = ViewBag.CurrentFilter })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Position", "Index", new { sortOrder = ViewBag.PositionSortParm, searchString = ViewBag.CurrentFilter })
+                    </th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var counter = (Model.PageNumber - 1) * Model.PageSize + 1;
+                }
+                @foreach (var item in Model)
+                {
+                    if(Model != null)
+                    {
+                        <tr>
+                            <th scope="row">@counter</th>
+                            <td>@item.FullName</td>
+                            <td>@item.Position</td>
+                            <td class="d-flex justify-content-around">
+                                    @Html.ActionLink("Edit", "EditEmployee", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm" })
+
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="alert alert-warning">
+                            <td colspan="7"><strong>No Medical Leaves Data</strong></td>
+                        </tr>
+                    }
+                    counter++;
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between border-top pt-3 mt-3">
+        <div>
+            <p class="mb-0">Total Employees: @Model.TotalItemCount</p>
+        </div>
+        <div>
+            <p class="mb-0">Page @(Model.PageNumber) of @(Model.PageCount)</p>
+        </div>
+        <div>
+            @if (Model.HasPreviousPage)
+            {
+                @Html.ActionLink("Previous", "Index", new { page = Model.PageNumber - 1, searchString = ViewBag.CurrentFilter, sortOrder = ViewBag.CurrentSort }, new { @class = "btn btn-primary" })
+            }
+
+            @if (!isFiltering && Model.PageNumber > 1)
+            {
+                @Html.ActionLink("Back to Start", "Index", new { page = 1 }, new { @class = "btn btn-secondary" })
+            }
+
+            @if (Model.HasNextPage)
+            {
+                @Html.ActionLink("Next", "Index", new { page = Model.PageNumber + 1, searchString = ViewBag.CurrentFilter, sortOrder = ViewBag.CurrentSort }, new { @class = "btn btn-primary" })
+            }
+        </div>
+    </div>
+</div>

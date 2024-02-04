@@ -1,0 +1,50 @@
+﻿@model BusinessManager.Application.ViewModel.HR.Employee.Work.ScheduleWork.MedicalLeave.MedicalLeaveViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div class="container shadow p-4 mb-5 bg-white rounded">
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4 class="mb-0">Leave Request Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">First Name:</dt>
+                <dd class="col-sm-9">@Model.FirstName</dd>
+
+                <dt class="col-sm-3">Last Name:</dt>
+                <dd class="col-sm-9">@Model.LastName</dd>
+
+                <dt class="col-sm-3">Start Date:</dt>
+                <dd class="col-sm-9">@Model.StartDate.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">End Date:</dt>
+                <dd class="col-sm-9">@Model.EndDate.ToString("yyyy-MM-dd")</dd>
+
+                @{
+                    var numberOfDays = (@Model.EndDate - @Model.StartDate).Days;
+                }
+                <p class="card-text"><strong>Number of Days:</strong> @numberOfDays</p>
+                @if (numberOfDays > 30)
+                {
+                    <p class="card-text"><strong>Medical Examination Required:</strong> Yes</p>
+                }
+
+            </dl>
+
+            <div class="mt-4">
+                <a asp-controller="MedicalLeaves" asp-action="Edit" asp-route-employeeId="@Model.EmployeeId" asp-route-Id="@Model.Id" class="btn btn-primary btn-sm">Edit</a>
+                <a asp-controller="MedicalLeaves" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm mr-2">Delete</a>
+                <a asp-controller="Employee" asp-action="Details" asp-route-Id="@Model.EmployeeId" class="btn btn-outline-secondary btn-sm mr-2">Employee Details</a>
+                <a asp-controller="MedicalLeaves" asp-action="Index" class="btn btn-outline-secondary btn-sm">List Medical Leaves</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+

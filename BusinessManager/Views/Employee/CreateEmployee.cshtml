@@ -1,0 +1,152 @@
+﻿@model BusinessManager.Application.ViewModel.HR.Employee.EmployeeDetails.NewEmployeeViewModel
+
+@{
+    ViewData["Title"] = "CreateEmployee";
+}
+
+<div class="container mt-5 shadow p-4 mb-5 bg-white rounded">
+    <form id="createEmployeeForm" class="card" asp-action="CreateEmployee" method="post">
+        <div class="card-header text-center">
+            <h2>Create New Employee</h2>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (ViewData.ModelState["EmployeeExists"]?.Errors.Count > 0)
+            {
+                <div class="alert alert-danger">
+                    @Html.ValidationMessage("EmployeeExists")
+                </div>
+            }
+            <div id="stepContainer">
+                <!-- Step 1: Personal Data -->
+                <div id="step0" class="step-form">
+                    <h3 class="mb-3">Personal Data</h3>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label">First Name:</label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label">Last Name:</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BirthDate" class="form-label">Birth Date:</label>
+                        <input asp-for="BirthDate" type="date" class="form-control" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PESEL" class="form-label">PESEL:</label>
+                        <input asp-for="PESEL" class="form-control" />
+                        <span asp-validation-for="PESEL" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Step 2: Address (Placeholder for your partial view) -->
+                <div id="step1" class="step-form" style="display: none;">
+                    @await Html.PartialAsync("Partials/Address", Model.Addresses)
+                </div>
+
+                <!-- Step 3: Contact (Placeholder for your partial view) -->
+                <div id="step2" class="step-form" style="display: none;">
+                    @await Html.PartialAsync("Partials/Contact", Model.Contacts)
+                </div>
+
+                <!-- Step 4: Education (Placeholder for your partial view) -->
+                <div id="step3" class="step-form" style="display: none;">
+                    @await Html.PartialAsync("Partials/Education", Model.Educations)
+                </div>
+
+                <!-- Step 5: Employment Contract (Placeholder for your partial view) -->
+                <div id="step4" class="step-form" style="display: none;">
+                    @await Html.PartialAsync("Partials/EmploymentContract", Model.Employments)
+                </div>
+
+                <!-- Step 6: Emergency Contact (Placeholder for your partial view) -->
+                <div id="step5" class="step-form" style="display: none;">
+                    @await Html.PartialAsync("Partials/EmergencyContact", Model.EmergencyContacts)
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-secondary" id="backButton" style="display: none;">Back</button>
+                    <button type="button" class="btn btn-primary" id="nextButton">Next</button>
+                    <input type="submit" value="Save" class="btn btn-success" id="saveButton" style="display: none;" />
+                </div>
+                <div class="row mb-3 pt-4">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <a asp-action="Index" class="btn btn-outline-danger">Exit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+    var currentStep = 0;
+    var totalSteps = 5; // Adjust this to the number of steps you have
+
+    function showStep(stepNumber) {
+        console.log('Showing step:', stepNumber); // Log the current step
+
+        // Hide all steps
+        for (var i = 0; i <= totalSteps; i++) {
+            var stepElement = document.getElementById('step' + i);
+            if (stepElement) {
+                stepElement.style.display = 'none';
+            } else {
+                console.error('Missing element: step' + i);
+            }
+        }
+
+        // Show the current step
+        var currentStepElement = document.getElementById('step' + stepNumber);
+        if (currentStepElement) {
+            currentStepElement.style.display = 'block';
+        } else {
+            console.error('Missing element: step' + stepNumber);
+        }
+
+        // Update step
+        currentStep = stepNumber;
+
+        // Control the display of 'Back' and 'Next/Save' buttons
+        document.getElementById('backButton').style.display = (currentStep === 0) ? 'none' : 'inline-block';
+        document.getElementById('nextButton').style.display = (currentStep === totalSteps) ? 'none' : 'inline-block';
+        document.getElementById('saveButton').style.display = (currentStep === totalSteps) ? 'inline-block' : 'none';
+    }
+
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            showStep(currentStep + 1);
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 0) {
+            showStep(currentStep - 1);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize the form with the first step visible
+        showStep(0);
+
+        // Setup click listeners for Next and Back buttons
+        document.getElementById('nextButton').addEventListener('click', nextStep);
+        document.getElementById('backButton').addEventListener('click', prevStep);
+    });
+</script>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,57 @@
+﻿@model List<BusinessManager.Application.ViewModel.HR.Employee.Contact.EmployeeAddressViewModel>
+@{
+    ViewData["Title"] = "Address";
+}
+@for (var i = 0; i < Model.Count; i++)
+{
+    var address = Model[i];
+
+    <div class="row">
+        <div>
+            <h3 class="mb-3">Address</h3>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@address.Id" name="Addresses[@i].Id" />
+            <div class="form-group">
+                <label asp-for="@address.Country" class="control-label">Country:</label>
+                <input asp-for="@address.Country" class="form-control" id="Country" name="Addresses[@i].Country" />
+                <span asp-validation-for="@address.Country" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@address.City" class="control-label">City:</label>
+                <input asp-for="@address.City" class="form-control" id="City" name="Addresses[@i].City" />
+                <span asp-validation-for="@address.City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@address.Region" class="control-label">Region:</label>
+                <input asp-for="@address.Region" class="form-control" id="Region" name="Addresses[@i].Region" />
+                <span asp-validation-for="@address.Region" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@address.PostalCode" class="control-label">Postal Code:</label>
+                <input asp-for="@address.PostalCode" class="form-control" id="PostalCode" name="Addresses[@i].PostalCode" />
+                <span asp-validation-for="@address.PostalCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@address.Street" class="control-label">Street:</label>
+                <input asp-for="@address.Street" class="form-control" id="Street" name="Addresses[@i].Street" />
+                <span asp-validation-for="@address.Street" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@address.BuildingNumber" class="control-label">Building Number:</label>
+                <input asp-for="@address.BuildingNumber" class="form-control" id="BuildingNumber" name="Addresses[@i].BuildingNumber" />
+                <span asp-validation-for="@address.BuildingNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@address.FlatNumber" class="control-label">Flat Number:</label>
+                <input asp-for="@address.FlatNumber" class="form-control" id="FlatNumber" name="Addresses[@i].FlatNumber" />
+                <span asp-validation-for="@address.FlatNumber" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+}

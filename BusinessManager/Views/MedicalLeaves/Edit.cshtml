@@ -1,0 +1,53 @@
+﻿@model BusinessManager.Application.ViewModel.HR.Employee.Work.ScheduleWork.MedicalLeave.MedicalLeaveViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4 shadow p-4 mb-5 bg-white rounded">
+    <div class="card">
+        <div class="card-header">
+            <h4>Medical Leaves Edit</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" hidden="hidden" class="form-control" />
+                <input type="hidden" asp-for="EmployeeId" value="@ViewData["EmployeeId"]" />
+
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label">First Name:</label>
+                    <input asp-for="FirstName" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label">Last Name:</label>
+                    <input asp-for="LastName" class="form-control" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StartDate" class="control-label">Start Date:</label>
+                    <input asp-for="StartDate" type="date" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EndDate" class="control-label">End Date:</label>
+                    <input asp-for="EndDate" type="date" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group d-flex justify-content-between mt-4">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                    <a asp-controller="Employee" asp-action="Details" asp-route-Id="@Model.EmployeeId" class="btn btn-outline-secondary">Employee Details</a>
+                    <a asp-controller="MedicalLeaves" asp-action="Index" class="btn btn-outline-danger">List Leave Request</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

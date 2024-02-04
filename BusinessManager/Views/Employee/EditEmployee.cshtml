@@ -1,0 +1,110 @@
+﻿@model BusinessManager.Application.ViewModel.HR.Employee.EmployeeDetails.NewEmployeeViewModel
+
+@{
+    ViewData["Title"] = "EditEmployee";
+}
+
+<div class="container mt-5 shadow p-4 mb-5 bg-white rounded">
+    <form id="editEmployeeForm" class="card" asp-action="EditEmployee" method="post">
+        <div class="card-header text-center">
+            <h2>Employee Edit</h2>
+        </div>
+        <div id="stepContainer" class="card-body">
+            <div id="step0" class="step-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h3 class="mb-3">Personal Data</h3>
+                <input type="hidden" asp-for="Id" name="Id" />
+                <div class="mb-3">
+                    <label asp-for="FirstName" class="control-label">First Name:</label>
+                    <input asp-for="FirstName" class="form-control" name="FirstName" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LastName" class="control-label">Last Name:</label>
+                    <input asp-for="LastName" class="form-control" name="LastName" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="BirthDate" class="control-label">Birth Date:</label>
+                    <input asp-for="BirthDate" type="date" class="form-control" name="BirthDate" />
+                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PESEL" class="control-label">PESEL:</label>
+                    <input asp-for="PESEL" class="form-control" name="PESEL" />
+                    <span asp-validation-for="PESEL" class="text-danger"></span>
+                </div>
+            </div>
+            <!--Partial View-->
+            <div id="step1" class="step-form" style="display: none;">
+                @await Html.PartialAsync("Partials/Address", Model.Addresses)
+            </div>
+            <div id="step2" class="step-form" style="display: none;">
+                @await Html.PartialAsync("Partials/Contact", Model.Contacts)
+            </div>
+            <div id="step3" class="step-form" style="display: none;">
+                @await Html.PartialAsync("Partials/EmergencyContact", Model.EmergencyContacts)
+            </div>
+            <!-- Action Partial Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn-secondary" id="EditAdress">Edit Address</button>
+                <button type="button" class="btn-secondary" id="EditContact">Edit Contact</button>
+                <button type="button" class="btn-secondary" id="EditEmergencyContact">Edit Emergency Contact</button>
+                <button type="button" class="btn-secondary" id="EditPersonalDate" style="display:none;">Edit Personal Date</button>
+            </div>
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+                <input type="submit" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-outline-danger">Exit</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var editAddressButton = document.getElementById('EditAdress');
+        var editContactButton = document.getElementById('EditContact');
+        var editEmergencyContact = document.getElementById('EditEmergencyContact')
+        var editPersonalDateButton = document.getElementById('EditPersonalDate');
+
+        function showOnlyOneStep(stepId) {
+            var steps = ['step0', 'step1', 'step2', 'step3', 'step4'];
+            steps.forEach(function (step) {
+                var stepElement = document.getElementById(step);
+                if (stepElement) {
+                    stepElement.style.display = step === stepId ? 'block' : 'none';
+                }
+            });
+
+            // Ukrywanie i pokazywanie przycisków na podstawie aktywnej sekcji
+            editAddressButton.style.display = stepId === 'step1' ? 'none' : 'block';
+            editContactButton.style.display = stepId === 'step2' ? 'none' : 'block';
+            editEmergencyContact.style.display = stepId === 'step3' ? 'none' : 'block';
+            editPersonalDateButton.style.display = stepId === 'step0' ? 'none' : 'block';
+        }
+
+        if (editAddressButton && editContactButton && editEmergencyContact && editPersonalDateButton) {
+            editAddressButton.addEventListener('click', function () {
+                showOnlyOneStep('step1');
+            });
+
+            editContactButton.addEventListener('click', function () {
+                showOnlyOneStep('step2');
+            });
+            editEmergencyContact.addEventListener('click', function () {
+                showOnlyOneStep('step3')
+            })
+            editPersonalDateButton.addEventListener('click', function () {
+                showOnlyOneStep('step0');
+            });
+        }
+
+        // Inicjalizacja widoku
+        showOnlyOneStep('step0');
+    });
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

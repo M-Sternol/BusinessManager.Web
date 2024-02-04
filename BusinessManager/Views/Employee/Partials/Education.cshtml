@@ -1,0 +1,89 @@
+﻿@model List<EmployeeEducationViewModel>
+@using BusinessManager.Application.ViewModel.HR.Employee.Education
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Education";
+}
+
+@for (var i = 0; i < Model.Count; i++)
+{
+    var education = Model[i];
+
+    <div class="row">
+        <div>
+            <h3 class="mb-3">Education</h3>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@education.Id" name="Educations[@i].Id" />
+
+            <div class="form-group">
+                <label asp-for="@education.EducationLevel" class="control-label">Education Level</label>
+                <select asp-for="@education.EducationLevel" asp-items="Html.GetEnumSelectList<EducationLevelVm>()" class="form-control" name="Educations[@i].EducationLevel"></select>
+                <span asp-validation-for="@education.EducationLevel" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@education.SchoolName" class="control-label">School Name</label>
+                <input asp-for="@education.SchoolName" class="form-control" name="Educations[@i].SchoolName" />
+                <span asp-validation-for="@education.SchoolName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@education.GraduationDate" class="control-label">Graduation Date</label>
+                <input asp-for="@education.GraduationDate" type="date" class="form-control" name="Educations[@i].GraduationDate" />
+                <span asp-validation-for="@education.GraduationDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check pt-3">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="@education.IsCurrentlyEnrolled" name="Educations[@i].IsCurrentlyEnrolled" type="checkbox" />
+                    Is Currently Enrolled
+                </label>
+                <span asp-validation-for="@education.IsCurrentlyEnrolled" class="text-danger"></span>
+            </div>
+
+            <!-- Skills -->
+            <div class="form-group">
+                <label>Skills</label>
+                @for (var j = 0; j < education.Skills.Count; j++)
+                {
+                    <div>
+                        <input type="text" asp-for="@education.Skills[j].SkillName" class="form-control" name="Educations[@i].Skills[@j].SkillName" />
+                    </div>
+                }
+            </div>
+
+            <!-- Certifications -->
+            <div class="form-group">
+                <label>Certifications</label>
+                @for (var j = 0; j < education.Certifications.Count; j++)
+                {
+                    <div>
+                        <input type="text" asp-for="@education.Certifications[j].CertificationName" class="form-control" name="Educations[@i].Certifications[@j].CertificationName" />
+                    </div>
+                }
+            </div>
+
+            <!-- Languages -->
+            <div class="form-group p-1">
+                <label>Languages</label>
+                @for (var j = 0; j < education.Languages.Count; j++)
+                {
+                    var language = education.Languages[j];
+                    <div>
+                        <input type="text" asp-for="@language.LanguageName" class="form-control" name="Educations[@i].Languages[@j].LanguageName" />
+                        <label class="form-check-label">Proficiency Level</label>
+                        <select asp-for="@language.ProficiencyLevel" asp-items="Html.GetEnumSelectList<LanguageProficiency>()" class="form-control" name="Educations[@i].Languages[@j].ProficiencyLevel"></select>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

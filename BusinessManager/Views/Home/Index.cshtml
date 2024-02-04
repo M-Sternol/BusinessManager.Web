@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container text-center mt-5 shadow p-4 mb-5 bg-white rounded">
+    @if (!User.Identity.IsAuthenticated)
+    {
+            <div class="row">
+                <div class="col text-center">
+                    <h1 class="display-4 text-dark">Witaj na stronie głównej</h1>
+                    <p class="lead text-secondary">Dziękujemy za odwiedzenie naszej strony BussinessManager!</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <strong class="mb-4">Aby uzyskać dostęp do pełnych zasobów, prosimy o </strong>
+                </div>
+                <div>
+                <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Login" style="font-size: 18px;">Zalogowanie się</a>
+                </div>
+            </div>
+
+    }
+    else
+    {
+        <h2 class="mb-4"><strong>Teraz możesz korzystać z pełnych zasobów naszej aplikacji.</strong></h2>
+
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card mb-4" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Dodaj Pracownika</h5>
+                        <p class="card-text">Dodaj nowego pracownika do bazy danych.</p>
+                        <a asp-controller="Employee" asp-action="CreateEmployee" class="btn btn-success">Utwórz Pracownika</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Lista Pracowników</h5>
+                        <p class="card-text">Wyświetl listę wszystkich pracowników.</p>
+                        <a asp-controller="Employee" asp-action="Index" class="btn btn-outline-secondary btn-sm">Lista Pracowników</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Lista Urlopów</h5>
+                        <p class="card-text">Wyświetl listę wszystkich urlopów pracowników.</p>
+                        <a asp-controller="LeaveRequest" asp-action="Index" class="btn btn-outline-secondary btn-sm">Lista Urlopów</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card mb-4" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Lista Zwolnień Lekarskich</h5>
+                        <p class="card-text">Wyświetl listę wszystkich zwolnień lekarskich pracowników.</p>
+                        <a asp-controller="MedicalLeaves" asp-action="Index" class="btn btn-outline-secondary btn-sm">Lista Zwolnień Lekarskich</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
